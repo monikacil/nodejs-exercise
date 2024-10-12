@@ -1,18 +1,32 @@
 import mongoose, { Schema } from "mongoose";
 
 const PlantSchema = new Schema({
-  species: {
-    type: String,
-    require: true,
-  },
-  variety: {
-    type: String,
-    require: true,
-  },
-  price: String,
-  date: {
-    type: Date,
-    require: true,
+  plant: {
+    species: {
+      type: String,
+      require: true,
+      trim: true,
+    },
+    variety: {
+      type: String,
+      require: true,
+      trim: true,
+    },
+    price: {
+      type: String,
+      require: true,
+      trim: true,
+    },
+    date: {
+      type: Date,
+      require: true,
+      trim: true,
+    },
+    passport: {
+      type: String,
+      require: true,
+      trim: true,
+    },
   },
   buyer: {
     name: {
@@ -27,15 +41,23 @@ const PlantSchema = new Schema({
     },
     email: {
       type: String,
+      trim: true,
     },
     isProffessional: {
       type: Boolean,
       default: false,
     },
   },
-  passport: String,
+  passport: {
+    type: String,
+    require: true,
+    trim: true,
+  },
   img: Array,
-  country: String,
+  country: {
+    type: String,
+    require: true,
+  },
 });
 
 export default mongoose.model("Plant", PlantSchema);
