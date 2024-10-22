@@ -1,0 +1,9 @@
+<div class="input-group mb-3">
+    <select class="form-select" name="searchBy">
+        <option value="species" <%- query.searchBy === 'species' ? "selected" : '' %>>Species</option>
+        <option value="variety" <%- query.searchBy === 'variety' ? "selected" : '' %>>Variety</option>
+      </select>
+    <input type="text" class="form-control" placeholder="Search..." value="<%- query.q %>" name="q">
+    <button class="btn btn-outline-primary">Search</button>
+</div>
+ 

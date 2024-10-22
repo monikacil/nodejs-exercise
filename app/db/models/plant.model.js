@@ -1,32 +1,30 @@
 import mongoose, { Schema } from "mongoose";
 
 const PlantSchema = new Schema({
-  plant: {
-    species: {
-      type: String,
-      require: true,
-      trim: true,
-    },
-    variety: {
-      type: String,
-      require: true,
-      trim: true,
-    },
-    price: {
-      type: String,
-      require: true,
-      trim: true,
-    },
-    date: {
-      type: Date,
-      require: true,
-      trim: true,
-    },
-    passport: {
-      type: String,
-      require: true,
-      trim: true,
-    },
+  species: {
+    type: String,
+    require: true,
+    trim: true,
+  },
+  variety: {
+    type: String,
+    require: true,
+    trim: true,
+  },
+  price: {
+    type: String,
+    require: true,
+    trim: true,
+  },
+  date: {
+    type: Date,
+    require: true,
+    trim: true,
+  },
+  passport: {
+    type: String,
+    require: true,
+    trim: true,
   },
   buyer: {
     name: {

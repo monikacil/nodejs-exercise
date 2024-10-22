@@ -12,9 +12,7 @@ import { showUserDetails } from "../controllers/user.controller.js";
 const router = express.Router();
 
 router.get("/", (req, res) => {
-  res.render("home", {
-    url: req.url,
-  });
+  res.render("home");
 });
 
 router.get("/user", showUserDetails);
@@ -28,9 +26,7 @@ router.get("/plants/:id", showPlantDetails);
 router.post("/plants/form", plantEditForm);
 
 router.get("*", (req, res) => {
-  res.render("layout/404", {
-    url: req.url,
-  });
+  res.render("layout/404");
 });
 
 export default router;

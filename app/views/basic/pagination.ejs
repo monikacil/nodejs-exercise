@@ -1,0 +1,20 @@
+<nav>
+    <ul class="pagination justify-content-center">
+      <% for( let i= 1; i <= pagesCount; i++) { %>
+        <li class="page-item <%- page === i ? 'active' : ''%>"><a class="page-link" href="" data-page="<%- i %>"><%- i %></a></li>
+      <% } %>
+    </ul>
+</nav>
+
+<script>
+    const changePage = e => {
+        e.preventDefault()
+        const query = new URLSearchParams(window.location.search)
+        query.set('page', e.target.dataset.page)
+        const url = window.location.origin + window.location.pathname + '?' + query.toString()
+        window.location.href = url
+    }
+    document.querySelectorAll('.pagination a').forEach((el)=> {
+        el.addEventListener('click', changePage)
+    })
+</script>

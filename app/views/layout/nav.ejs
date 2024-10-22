@@ -13,7 +13,7 @@
             <a class="nav-link <%- url === '/' ? 'active' :  ''-%>" aria-current="page" href="/">Home</a>
           </li>
           <li class="nav-item">
-            <a class="nav-link <%- url === '/plants' ? 'active' :  ''-%>" href="/plants">Plants list</a>
+            <a class="nav-link <%- url.includes('/plants') ? 'active' :  ''-%>" href="/plants">Plants list</a>
           </li>
         </ul>
       </div>

@@ -1,0 +1,18 @@
+<div class="input-group mb-3">
+    <label class="input-group-text" for="sort">Sort by:</label>
+    <select name="sort" id="sort" class="form-select form-select-sm">
+        <option value="" selected>Default</option>
+        <% if (query.searchBy === 'species') { %>
+          <option value="species|asc" <%- query.sort === 'species|asc' ? "selected" : '' %>>A-Z</option>
+          <option value="species|desc" <%- query.sort === 'species|desc' ? "selected" : '' %>>Z-A</option>
+        <% } else { %>
+          <option value="variety|asc" <%- query.sort === 'variety|asc' ? "selected" : '' %>>A-Z</option>
+          <option value="variety|desc" <%- query.sort === 'variety|desc' ? "selected" : '' %>>Z-A</option>
+        <% } %>
+        <option value="price|asc" <%- query.sort === 'price|asc' ? "selected" : '' %>>Price asc</option>
+        <option value="price|desc" <%- query.sort === 'price|desc' ? "selected" : '' %>>Price desc</option>
+        <option value="date|asc" <%- query.sort === 'date|asc' ? "selected" : '' %>>Date asc</option>
+        <option value="date|desc" <%- query.sort === 'date|desc' ? "selected" : '' %>>Date desc</option>
+      </select>
+      <button class="btn btn-primary">Sort</button>
+</div>

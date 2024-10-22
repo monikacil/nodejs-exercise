@@ -4,6 +4,8 @@ import { fileURLToPath } from "url";
 import path from "path";
 import expressLayouts from "express-ejs-layouts";
 import router from "./routes/web.js";
+import cors from "cors";
+import viewVar from "./middlewares/view-var.js";
 
 // database connection
 import "./db/db.js";
@@ -13,6 +15,10 @@ const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
 const app = express();
+
+app.use(cors());
+
+app.use(viewVar);
 
 // library - layout for views
 app.use(expressLayouts);
