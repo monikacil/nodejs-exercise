@@ -29,16 +29,22 @@ function showLoginForm(req, res) {
 }
 
 async function login(req, res) {
-  // const user = new User({
-  //   email: req.body.email,
-  //   password: req.body.password,
-  // });
   try {
-    await user.save();
+    const user = await User.findOne({ email: req.body.email });
+    const isValidPassword = await user.comparePassword(req.body.password);
+
+    if (!user || !isValidPassword) {
+      throw new Error("error occure");
+    }
+
+    req.session.user = {
+      _id: user._id,
+      email: user.email,
+    };
     res.redirect("/");
   } catch (e) {
     res.render("user/login", {
-      errors: e.errors,
+      errors: true,
       form: req.body,
     });
   }

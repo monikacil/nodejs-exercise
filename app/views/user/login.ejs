@@ -8,27 +8,25 @@
     <div class="mb-3">
         <label for="email" class="form-label">Email</label>
         <input type="email" 
-        class="form-control <%- errors?.email ? 'is-invalid' : '' %>" 
+        class="form-control" 
         name="email" 
         value="<%- form.email %>"
         id="email"
         required>
-        <% if (errors?.email) { %>
-        <div class="invalid-feedback"><%= errors.email.message %></div>
-        <% } %>
     </div>
 
     <div class="mb-3">
         <label for="password" class="form-label">Password</label>
         <input type="password" 
-        class="form-control <%- errors?.password ? 'is-invalid' : '' %>" 
+        class="form-control" 
         name="password"
         id="password"
         required>
-        <% if (errors?.password) { %>
-        <div class="invalid-feedback"><%= errors.password.message %></div>
-        <% } %>
     </div>
+
+    <% if (errors) { %>
+    <div class="alert alert-danger">Invalid email or password</div>
+    <% } %>
 
     <button class="btn btn-primary">Login</button>
     </form>

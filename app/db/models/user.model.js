@@ -18,6 +18,12 @@ const UserSchema = new Schema({
   },
 });
 
+UserSchema.methods = {
+  async comparePassword(password) {
+    return await bcrypt.compare(password, this.password);
+  },
+};
+
 UserSchema.pre("save", function (next) {
   if (this.password) {
     var salt = bcrypt.genSaltSync(10);
