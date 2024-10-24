@@ -1,77 +1,87 @@
 <div class="bg-light my-5 p-5 shadow bg-body-tertiary rounded">
-  <form method="POST" class="row g-3 needs-validation" novalidate>
+  <h3><%= formName %></h3>
+  <form method="POST" class="row g-3 needs-validation">
     <div class="mb-3 col-md-4">
-      <label for='species-input' class='form-label'>
+      <label for="species-input" class="form-label">
         Species
       </label>
-      <input type='string' class='form-control' id='species-input' name="species" />
+      <input id="species-input" name="species" type="string" value="<%= form.species %>" class="form-control <%- errors?.species ? 'is-invalid' : '' %>"/>
+      <% if(errors?.species) { %>
+        <div class="invalid-feedback"><%= errors.species.message %></div>
+      <% } %>
     </div>
     <div class="mb-3 col-md-6">
-      <label for='variety-input' class='form-label'>
+      <label for="variety-input" class="form-label">
         Variety
       </label>
-      <input type='string' class='form-control' id='variety-input' name="variety"/>
+      <input id="variety-input" name="variety" type="string" value="<%= form.variety %>" class="form-control <%- errors?.variety ? 'is-invalid' : '' %>"/>
+      <% if(errors?.variety) { %>
+        <div class="invalid-feedback"><%= errors.variety.message %></div>
+      <% } %>
     </div>
     <div class="mb-3 col-md-2">
-      <label for='price-input' class='form-label'>
+      <label for="price-input" class="form-label">
         Price
       </label>
-      <input type='string' class='form-control' id='price-input' name="price"/>
+      <input id="price-input" name="price" type="string" value="<%= form.price %>" class="form-control"/>
     </div>
     <div class="mb-3 col-md-8">
-      <label for='passport-input' class='form-label'>
+      <label for="passport-input" class="form-label">
         Passport
       </label>
-      <input type='string' class='form-control' id='passport-input' name="passport"/>
+      <input id="passport-input" name="passport" type="string" value="<%= form.passport %>" class="form-control <%- errors?.passport ? 'is-invalid' : '' %>"/>
+      <% if(errors?.passport) { %>
+        <div class="invalid-feedback"><%= errors.passport.message %></div>
+      <% } %>
     </div>
     <div class="mb-3 col-md-4">
-      <label for='date-input' class='form-label'>
+      <label for="date-input" class="form-label">
         Date
       </label>
-      <input type='date' class='form-control' id='date-input' name="date"/>
+      <input id="date-input" name="date" type="date" value="<%= form.date %>" class="form-control"/>
     </div>
     <div class="mb-3 col-md-4">
-      <label for='buyer-name-input' class='form-label'>
+      <label for="buyer-name-input" class="form-label">
         Buyer name
       </label>
-      <input type='string' class='form-control' id='buyer-name-input' name="buyer-name"/>
+      <input id="buyer-name-input" name="buyer-name" type="string" value="<%= form['buyer-name'] %>" class="form-control <%- errors?.['buyer.name'] ? 'is-invalid' : '' %>"/>
+      <% if(errors?.["buyer.name"]) { %>
+        <div class="invalid-feedback"><%= errors["buyer.name"].message %></div>
+      <% } %>
     </div>
     <div class="mb-3 col-md-6">
-      <label for='address-input' class='form-label'>
+      <label for="address-input" class="form-label">
         Address
       </label>
-      <input type='string' class='form-control' id='address-input' name="address"/>
+      <input id="address-input" name="address" type="string" value="<%= form.address %>" class="form-control"/>
     </div>
     <div class="mb-3 col-md-2">
-      <label for='country-input' class='form-label'>
+      <label for="country-input" class="form-label">
         Country code
       </label>
-      <select class='form-select' id='country-input' name="country">
-        <option value="PL">PL</option>
-        <option value="EN">EN</option>
-        <option value="DE">DE</option>
+      <select id="country-input" name="country" type="string" class="form-select" >
+        <option value="PL" <%= form.country == 'PL' ? 'selected' : '' %>>PL</option>
+        <option value="EN" <%= form.country == 'EN' ? 'selected' : '' %>>EN</option>
+        <option value="DE" <%= form.country == 'DE' ? 'selected' : '' %>>DE</option>
       </select>
     </div>
     <div class="mb-3 col-md-6">
-      <label for='phone-input' class='form-label'>
+      <label for="phone-input" class="form-label">
         Phone
       </label>
-      <input type='number' class='form-control' id='phone-input' name="phone"/>
+      <input id="phone-input" name="phone" type="string" value="<%= form.phone %>" class="form-control <%- errors?.['buyer.phone'] ? 'is-invalid' : '' %>"/>
+      <% if(errors?.["buyer.phone"]) { %>
+        <div class="invalid-feedback"><%= errors["buyer.phone"].message %></div>
+      <% } %>
     </div>
     <div class="mb-3 col-md-6">
-      <label for='email-input' class='form-label'>
+      <label for="email-input" class="form-label">
         Email
       </label>
-      <input type='email' class='form-control' id='email-input' name="email"/>
-    </div>
-    
-    <div class="mb-3 col-md-12">
-      <div class="form-check">
-        <label class="form-check-label" for="is-proffessional">
-          Proffessional
-        </label>
-        <input class="form-check-input" type="checkbox" value="" id="is-proffessional">
-      </div>
+      <input id="email-input" name="email" type="string" value="<%= form.email %>" class="form-control <%- errors?.['buyer.email'] ? 'is-invalid' : '' %>" />
+      <% if(errors?.["buyer.email"]) { %>
+        <div class="invalid-feedback"><%= errors["buyer.email"].message %></div>
+      <% } %>
     </div>
     <button type="submit" class="btn btn-primary">Submit</button>
   </form>

@@ -25,7 +25,11 @@
                         Passport number:  
                         <%= obj.passport %>
                         </div>
-                        <a class="btn btn-primary w-50 mt-4" href=<%="/plants/" + obj._id %> >Details</a>
+                        <a class="btn btn-primary mt-4" href=<%= "/plants/" + obj._id %> >Details</a>
+                        <a class="btn btn-outline-primary mt-4" href=<%= "/plants/" + obj._id + "/form" %> >Edit</a>
+                        <a class="btn btn-danger mt-4" 
+                            onclick="return confirm('Are you sure?')" 
+                            href=<%= "/plants/" + obj._id + "/delete" %>>Delete</a>
                     </div>
                 </div>
             </div>

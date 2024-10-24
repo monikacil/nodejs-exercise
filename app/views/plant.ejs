@@ -1,9 +1,43 @@
 <div class="bg-light my-5 p-5 shadow bg-body-tertiary rounded">
+    <nav aria-label="breadcrumb">
+        <ol class="breadcrumb">
+          <li class="breadcrumb-item"><a href="/plants">Plants List</a></li>
+          <li class="breadcrumb-item active" aria-current="page">Plant Details</li>
+        </ol>
+      </nav>
     <div class="mb-4 pb-4 d-flex justify-content-between border-bottom">
         <h5 class="mb-0 text-capitalize">
             <%- plant.species + " "+ plant.variety %>
-        </h3>
+        </h5>
     </div>
-    
+
+    <div class="row">
+        <div class="col">
+            <div class="py-3 fs-4">Plant Information</div>
+            <ul class="list-group list-group-flush">
+                <li class="list-group-item bg-light">Species:  <%- plant.species %> </li>
+                <li class="list-group-item bg-light">Variety:  <%- plant.variety %> </li>
+                <li class="list-group-item bg-light">Passport: <%- plant.passport %> </li>
+                <li class="list-group-item bg-light">Sold date: <%- plant.date.toISOString().substring(0, 10) %> </li>
+                <li class="list-group-item bg-light">Price: <%- plant.price %> zł</li>
+            </ul>
+        </div>
+        <div class="col">
+            <div class="py-3 fs-4">Buyer information</div>
+            <ul class="list-group list-group-flush">
+                <li class="list-group-item bg-light">Name:  <%- plant.buyer.name %> </li>
+                <li class="list-group-item bg-light">Address:  <%- plant.buyer.address + ' ' + plant.buyer.country %> </li>
+                <li class="list-group-item bg-light">Phone number: <%- plant.buyer.phone %> </li>
+                <li class="list-group-item bg-light">Email: <%- plant.buyer.email %> </li>
+            </ul>
+        </div>
+    </div>
+
+      <div class="mt-4 text-end">
+        <a class="btn btn-primary" href=<%= "/plants/" + plant._id + "/form" %> >Edit</a>
+        <a class="btn btn-danger" 
+            onclick="return confirm('Are you sure?')"
+            href=<%= "/plants/" + plant._id + "/delete" %>>Delete</a>
+      </div>
 
 </div>

@@ -3,59 +3,54 @@ import mongoose, { Schema } from "mongoose";
 const PlantSchema = new Schema({
   species: {
     type: String,
-    require: true,
+    required: [true, "Species is required"],
+    minLength: [3, "Minimum length is 3 characters"],
     trim: true,
+    lowercase: true,
   },
   variety: {
     type: String,
-    require: true,
+    required: [true, "Variety is required"],
+    minLength: [3, "Minimum length is 3 characters"],
     trim: true,
+    lowercase: true,
   },
   price: {
     type: String,
-    require: true,
     trim: true,
+    lowercase: true,
   },
   date: {
     type: Date,
-    require: true,
-    trim: true,
   },
   passport: {
     type: String,
-    require: true,
+    required: [true, "Passport number is required"],
     trim: true,
   },
   buyer: {
     name: {
       type: String,
-      require: true,
+      required: [true, "Buyer name is required"],
     },
     address: {
       type: String,
     },
     phone: {
       type: Number,
+      trim: true,
+      required: [true, "Buyer phone number is required"],
     },
     email: {
       type: String,
       trim: true,
+      required: [true, "Buyer email is required"],
     },
-    isProffessional: {
-      type: Boolean,
-      default: false,
+    country: {
+      type: String,
     },
-  },
-  passport: {
-    type: String,
-    require: true,
-    trim: true,
   },
   img: Array,
-  country: {
-    type: String,
-    require: true,
-  },
 });
 
 export default mongoose.model("Plant", PlantSchema);

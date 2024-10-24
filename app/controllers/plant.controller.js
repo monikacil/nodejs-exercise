@@ -37,39 +37,110 @@ async function showPlantsList(req, res) {
 }
 
 async function showPlantDetails(req, res) {
-  const plant = await Plant.find({ _id: req.params.id }).lean().exec();
+  const plant = await Plant.findById(req.params.id);
   res.render("plant", {
-    plant: plant[0],
+    plant: plant,
   });
 }
 
-function showPlantEditForm(req, res) {
+function showAddPlantForm(req, res) {
   res.render("form", {
-    url: req.url,
-  });
-}
-
-async function plantEditForm(req, res) {
-  const plant = new Plant({
-    species: req.body.species,
-    variety: req.body.variety,
-    price: req.body.price,
-    date: req.body.date,
-    passport: req.body.passport,
-    buyer: {
-      name: req.body["buyer-name"],
-      address: req.body.address,
-      phone: req.body.phone,
-      email: req.body.email,
-      isProffessional: req.body["is-proffessional"],
+    formName: "Add new Plant",
+    form: {
+      date: new Date().toISOString().substring(0, 10),
     },
   });
+}
+
+async function addPlantForm(req, res) {
+  const data = req.body;
+  try {
+    const plant = new Plant({
+      species: data.species,
+      variety: data.variety,
+      price: data.price,
+      date: data.date,
+      passport: data.passport,
+      buyer: {
+        name: data["buyer-name"],
+        address: data.address,
+        phone: data.phone,
+        email: data.email,
+        country: data.country,
+      },
+    });
+
+    await plant.save();
+    res.redirect("/plants");
+  } catch (e) {
+    res.render("form", {
+      errors: e.errors,
+      formName: "Add new Plant",
+      form: req.body,
+    });
+  }
+}
+
+async function showEditPlantForm(req, res) {
+  const plant = await Plant.findById(req.params.id);
+  const formBody = {
+    species: plant.species,
+    variety: plant.variety,
+    price: plant.price,
+    date: plant.date.toISOString().substring(0, 10),
+    passport: plant.passport,
+    ["buyer-name"]: plant.buyer.name,
+    address: plant.buyer.address,
+    phone: plant.buyer.phone,
+    email: plant.buyer.email,
+    country: plant.buyer.country,
+  };
+  res.render("form", {
+    form: formBody,
+    formName: "Edit Plant Details",
+  });
+}
+
+async function editPlantForm(req, res) {
+  const data = req.body;
+  const plant = await Plant.findById(req.params.id);
+  plant.species = data.species;
+  plant.variety = data.variety;
+  plant.price = data.price;
+  plant.date = data.date;
+  plant.passport = data.passport;
+  plant.buyer.name = data["buyer-name"];
+  plant.buyer.address = data.address;
+  plant.buyer.phone = data.phone;
+  plant.buyer.email = data.email;
+  plant.buyer.country = data.country;
   try {
     await plant.save();
     res.redirect("/plants");
   } catch (e) {
-    console.log("błąd");
+    res.render("form", {
+      errors: e.errors,
+      formName: "Edit Plant Details",
+      form: req.body,
+    });
   }
 }
 
-export { showPlantsList, showPlantDetails, showPlantEditForm, plantEditForm };
+async function deletePlant(req, res) {
+  try {
+    await Plant.findByIdAndDelete({ _id: req.params.id });
+    res.redirect("/plants");
+  } catch (e) {
+    console.log(e);
+  }
+}
+
+export {
+  showPlantsList,
+  showPlantDetails,
+  showAddPlantForm,
+  addPlantForm,
+  showEditPlantForm,
+  editPlantForm,
+  deletePlant,
+};

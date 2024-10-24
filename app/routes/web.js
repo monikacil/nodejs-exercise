@@ -3,8 +3,11 @@ import express from "express";
 import {
   showPlantsList,
   showPlantDetails,
-  showPlantEditForm,
-  plantEditForm,
+  showAddPlantForm,
+  addPlantForm,
+  showEditPlantForm,
+  editPlantForm,
+  deletePlant,
 } from "../controllers/plant.controller.js";
 
 import { showUserDetails } from "../controllers/user.controller.js";
@@ -19,11 +22,17 @@ router.get("/user", showUserDetails);
 
 router.get("/plants", showPlantsList);
 
-router.get("/plants/form", showPlantEditForm);
+router.get("/plants/form", showAddPlantForm);
+
+router.post("/plants/form", addPlantForm);
+
+router.get("/plants/:id/form", showEditPlantForm);
+
+router.post("/plants/:id/form", editPlantForm);
+
+router.get("/plants/:id/delete", deletePlant);
 
 router.get("/plants/:id", showPlantDetails);
-
-router.post("/plants/form", plantEditForm);
 
 router.get("*", (req, res) => {
   res.render("layout/404");
