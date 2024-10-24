@@ -18,10 +18,12 @@ const UserSchema = new Schema({
   },
 });
 
-UserSchema.path("password").set((value) => {
-  const salt = bcrypt.genSaltSync(10);
-  const hash = bcrypt.hashSync(value, salt);
-  return hash;
+UserSchema.pre("save", function (next) {
+  if (this.password) {
+    var salt = bcrypt.genSaltSync(10);
+    this.password = bcrypt.hashSync(this.password, salt);
+  }
+  next();
 });
 
 UserSchema.post("save", function (error, doc, next) {
