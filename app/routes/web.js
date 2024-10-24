@@ -10,7 +10,13 @@ import {
   deletePlant,
 } from "../controllers/plant.controller.js";
 
-import { showUserDetails } from "../controllers/user.controller.js";
+import {
+  showUserDetails,
+  showRegisterForm,
+  register,
+  showLoginForm,
+  login,
+} from "../controllers/user.controller.js";
 
 const router = express.Router();
 
@@ -19,6 +25,14 @@ router.get("/", (req, res) => {
 });
 
 router.get("/user", showUserDetails);
+
+router.get("/register", showRegisterForm);
+
+router.post("/register", register);
+
+router.get("/login", showLoginForm);
+
+router.post("/login", login);
 
 router.get("/plants", showPlantsList);
 

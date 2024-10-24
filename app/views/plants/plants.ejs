@@ -11,8 +11,8 @@
         </div>
     <%} else { %>
         <form method="get">
-            <%- include('./basic/search.ejs'); -%>
-            <%- include('./basic/sort.ejs'); -%>
+            <%- include('../basic/search.ejs'); -%>
+            <%- include('../basic/sort.ejs'); -%>
         </form>
         <div class="row mb-3">
             <% plants.forEach((obj, idx) => { %>
@@ -40,7 +40,7 @@
                 </div>
                 <% }) %>
         </div>
-        <%- include('./basic/pagination.ejs'); -%>
+        <%- include('../basic/pagination.ejs'); -%>
     <%}%>
     
 </div>

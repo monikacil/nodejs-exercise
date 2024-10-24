@@ -28,7 +28,7 @@ async function showPlantsList(req, res) {
   const resultsCount = await Plant.find(allQueries).countDocuments();
   const pagesCount = Math.ceil(resultsCount / perPage);
 
-  res.render("plants", {
+  res.render("plants/plants", {
     plants,
     page,
     pagesCount,
@@ -38,13 +38,13 @@ async function showPlantsList(req, res) {
 
 async function showPlantDetails(req, res) {
   const plant = await Plant.findById(req.params.id);
-  res.render("plant", {
+  res.render("plants/plant", {
     plant: plant,
   });
 }
 
 function showAddPlantForm(req, res) {
-  res.render("form", {
+  res.render("plants/form", {
     formName: "Add new Plant",
     form: {
       date: new Date().toISOString().substring(0, 10),
@@ -73,7 +73,7 @@ async function addPlantForm(req, res) {
     await plant.save();
     res.redirect("/plants");
   } catch (e) {
-    res.render("form", {
+    res.render("plants/form", {
       errors: e.errors,
       formName: "Add new Plant",
       form: req.body,
@@ -95,7 +95,7 @@ async function showEditPlantForm(req, res) {
     email: plant.buyer.email,
     country: plant.buyer.country,
   };
-  res.render("form", {
+  res.render("plants/form", {
     form: formBody,
     formName: "Edit Plant Details",
   });
@@ -118,7 +118,7 @@ async function editPlantForm(req, res) {
     await plant.save();
     res.redirect("/plants");
   } catch (e) {
-    res.render("form", {
+    res.render("plants/form", {
       errors: e.errors,
       formName: "Edit Plant Details",
       form: req.body,
