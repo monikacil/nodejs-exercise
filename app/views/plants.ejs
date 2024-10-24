@@ -5,38 +5,43 @@
         </h3>
         <a class="d-flex flex-row-reverse btn btn-primary" href="/plants/form" >Add new plant</a>
     </div>
-    <form method="get">
-        <%- include('./basic/search.ejs'); -%>
-        <%- include('./basic/sort.ejs'); -%>
-    </form>
-    <div class="row mb-3">
-        <% plants.forEach((obj, idx) => { %>
-            <div class="col-12 col-sm-6 col-md-4 col-lg-3">
-                <div class="card mt-3">
-                    <div class="card-body">
-                        <h5 class="card-title">
-                        Species: <%= obj.species %>
-                        </h5>
-                        <div>
-                        Variety: 
-                        <%= obj.variety %>
+    <% if(!plants.length) { %>
+        <div class="alert alert-primary" role="alert">
+            Plants collection is empty - add new plant!
+        </div>
+    <%} else { %>
+        <form method="get">
+            <%- include('./basic/search.ejs'); -%>
+            <%- include('./basic/sort.ejs'); -%>
+        </form>
+        <div class="row mb-3">
+            <% plants.forEach((obj, idx) => { %>
+                <div class="col-12 col-sm-6 col-md-4 col-lg-3">
+                    <div class="card mt-3">
+                        <div class="card-body">
+                            <h5 class="card-title">
+                            Species: <%= obj.species %>
+                            </h5>
+                            <div>
+                            Variety: 
+                            <%= obj.variety %>
+                            </div>
+                            <div>
+                            Passport number:  
+                            <%= obj.passport %>
+                            </div>
+                            <a class="btn btn-primary mt-4" href=<%= "/plants/" + obj._id %> >Details</a>
+                            <a class="btn btn-outline-primary mt-4" href=<%= "/plants/" + obj._id + "/form" %> >Edit</a>
+                            <a class="btn btn-danger mt-4" 
+                                onclick="return confirm('Are you sure?')" 
+                                href=<%= "/plants/" + obj._id + "/delete" %>>Delete</a>
                         </div>
-                        <div>
-                        Passport number:  
-                        <%= obj.passport %>
-                        </div>
-                        <a class="btn btn-primary mt-4" href=<%= "/plants/" + obj._id %> >Details</a>
-                        <a class="btn btn-outline-primary mt-4" href=<%= "/plants/" + obj._id + "/form" %> >Edit</a>
-                        <a class="btn btn-danger mt-4" 
-                            onclick="return confirm('Are you sure?')" 
-                            href=<%= "/plants/" + obj._id + "/delete" %>>Delete</a>
                     </div>
                 </div>
-            </div>
-            
-            <% }) %>
-    </div>
+                <% }) %>
+        </div>
+        <%- include('./basic/pagination.ejs'); -%>
+    <%}%>
     
-    <%- include('./basic/pagination.ejs'); -%>
 </div>
 
