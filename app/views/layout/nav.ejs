@@ -12,15 +12,24 @@
           <li class="nav-item">
             <a class="nav-link <%- url === '/' ? 'active' :  ''-%>" aria-current="page" href="/">Home</a>
           </li>
+          <% if(user) { %>
           <li class="nav-item">
             <a class="nav-link <%- url.includes('/plants') ? 'active' :  ''-%>" href="/plants">Plants list</a>
           </li>
           <li class="nav-item">
-            <a class="nav-link <%- url.includes('/register') ? 'active' :  ''-%>" href="/register">Register</a>
+            <a class="nav-link <%- url.includes('/profile') ? 'active' :  ''-%>" href="/profile">Profile</a>
           </li>
           <li class="nav-item">
-            <a class="nav-link <%- url.includes('/login') ? 'active' :  ''-%>" href="/login">Login</a>
+            <a class="nav-link <%- url.includes('/logout') ? 'active' :  ''-%>" href="/logout">Logout</a>
           </li>
+          <% } else { %>
+            <li class="nav-item">
+              <a class="nav-link <%- url.includes('/register') ? 'active' :  ''-%>" href="/register">Register</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link <%- url.includes('/login') ? 'active' :  ''-%>" href="/login">Login</a>
+            </li>
+          <% } %>
         </ul>
       </div>
     </div>

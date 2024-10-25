@@ -1,0 +1,34 @@
+<div class="bg-light my-5 p-5 shadow bg-body-tertiary rounded">
+    <div class="mb-4 pb-4 d-flex justify-content-between border-bottom">
+        <h5 class="mb-0 text-capitalize">
+           Edit profile
+        </h5>
+    </div>
+    <form method="POST">
+    <div class="mb-3">
+        <label for="email" class="form-label">Email</label>
+        <input type="email" 
+        class="form-control <%- errors?.email ? 'is-invalid' : '' %>" 
+        name="email" 
+        value="<%- user.email %>"
+        id="email"
+        required>
+        <% if (errors?.email) { %>
+        <div class="invalid-feedback"><%= errors.email.message %></div>
+        <% } %>
+    </div>
+
+    <div class="mb-3">
+        <label for="password" class="form-label">Password</label>
+        <input type="password" 
+        class="form-control <%- errors?.password ? 'is-invalid' : '' %>" 
+        name="password"
+        id="password">
+        <% if (errors?.password) { %>
+        <div class="invalid-feedback"><%= errors.password.message %></div>
+        <% } %>
+    </div>
+
+    <button class="btn btn-primary">Update</button>
+    </form>
+</div>

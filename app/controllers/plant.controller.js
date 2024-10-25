@@ -5,31 +5,31 @@ async function showPlantsList(req, res) {
   const page = req.query.page || 1;
   const perPage = 10;
 
-  const allQueries = {};
+  // const allQueries = {};
 
-  const searchValue = searchBy ? searchBy : "species";
+  // const searchValue = searchBy ? searchBy : "species";
 
-  if (q) {
-    allQueries[searchValue] = { $regex: q, $options: "ix" };
-  }
+  // if (q) {
+  //   allQueries[searchValue] = { $regex: q, $options: "ix" };
+  // }
 
-  let query = Plant.find(allQueries);
+  let query = Plant.findOne({ userId: req.session.user._id });
 
-  query.skip((page - 1) * perPage);
-  query = query.limit(perPage);
+  // query.skip((page - 1) * perPage);
+  // query = query.limit(perPage);
 
-  if (sort) {
-    const s = sort.split("|");
-    query.sort = query.sort({ [s[0]]: s[1] });
-  }
+  // if (sort) {
+  //   const s = sort.split("|");
+  //   query.sort = query.sort({ [s[0]]: s[1] });
+  // }
 
   const plants = await query.exec();
 
-  const resultsCount = await Plant.find(allQueries).countDocuments();
+  const resultsCount = plants.plants.length;
   const pagesCount = Math.ceil(resultsCount / perPage);
 
   res.render("plants/plants", {
-    plants,
+    plants: plants?.plants || [],
     page,
     pagesCount,
     resultsCount,
@@ -37,7 +37,13 @@ async function showPlantsList(req, res) {
 }
 
 async function showPlantDetails(req, res) {
-  const plant = await Plant.findById(req.params.id);
+  const userPlants = await Plant.findOne({ userId: req.session.user._id });
+  let plant = null;
+  userPlants.plants.forEach((el) => {
+    if (el._id.toString() === req.params.id) {
+      plant = el;
+    }
+  });
   res.render("plants/plant", {
     plant: plant,
   });
@@ -52,25 +58,36 @@ function showAddPlantForm(req, res) {
   });
 }
 
-async function addPlantForm(req, res) {
+async function addPlant(req, res) {
+  const userPlants = await Plant.findOne({ userId: req.session.user._id });
   const data = req.body;
-  try {
-    const plant = new Plant({
-      species: data.species,
-      variety: data.variety,
-      price: data.price,
-      date: data.date,
-      passport: data.passport,
-      buyer: {
-        name: data["buyer-name"],
-        address: data.address,
-        phone: data.phone,
-        email: data.email,
-        country: data.country,
-      },
-    });
+  const plant = {
+    species: data.species,
+    variety: data.variety,
+    price: data.price,
+    date: data.date,
+    passport: data.passport,
+    buyer: {
+      name: data["buyer-name"],
+      address: data.address,
+      phone: data.phone,
+      email: data.email,
+      country: data.country,
+    },
+  };
 
-    await plant.save();
+  try {
+    if (userPlants) {
+      userPlants.plants.push(plant);
+      await userPlants.save();
+    } else {
+      const newPlant = new Plant({
+        userId: req.session.user._id,
+        plants: [],
+      });
+      newPlant.plants.push(plant);
+      await newPlant.save();
+    }
     res.redirect("/plants");
   } catch (e) {
     res.render("plants/form", {
@@ -82,7 +99,13 @@ async function addPlantForm(req, res) {
 }
 
 async function showEditPlantForm(req, res) {
-  const plant = await Plant.findById(req.params.id);
+  const userPlants = await Plant.findOne({ userId: req.session.user._id });
+  let plant = null;
+  userPlants.plants.forEach((el) => {
+    if (el._id.toString() === req.params.id) {
+      plant = el;
+    }
+  });
   const formBody = {
     species: plant.species,
     variety: plant.variety,
@@ -95,15 +118,25 @@ async function showEditPlantForm(req, res) {
     email: plant.buyer.email,
     country: plant.buyer.country,
   };
+
   res.render("plants/form", {
     form: formBody,
     formName: "Edit Plant Details",
   });
 }
 
-async function editPlantForm(req, res) {
+async function editPlant(req, res) {
   const data = req.body;
-  const plant = await Plant.findById(req.params.id);
+
+  const userPlants = await Plant.findOne({ userId: req.session.user._id });
+  let plant = null;
+  let idx = null;
+  userPlants.plants.forEach((el, idx) => {
+    if (el._id.toString() === req.params.id) {
+      plant = el;
+      idx = idx;
+    }
+  });
   plant.species = data.species;
   plant.variety = data.variety;
   plant.price = data.price;
@@ -114,8 +147,11 @@ async function editPlantForm(req, res) {
   plant.buyer.phone = data.phone;
   plant.buyer.email = data.email;
   plant.buyer.country = data.country;
+
+  userPlants.plants[idx] = plant;
+
   try {
-    await plant.save();
+    await userPlants.save();
     res.redirect("/plants");
   } catch (e) {
     res.render("plants/form", {
@@ -127,8 +163,10 @@ async function editPlantForm(req, res) {
 }
 
 async function deletePlant(req, res) {
+  const userPlants = await Plant.findOne({ userId: req.session.user._id });
+  userPlants.plants = userPlants.plants.filter((plant) => plant._id.toString() != req.params.id);
   try {
-    await Plant.findByIdAndDelete({ _id: req.params.id });
+    await userPlants.save();
     res.redirect("/plants");
   } catch (e) {
     console.log(e);
@@ -139,8 +177,8 @@ export {
   showPlantsList,
   showPlantDetails,
   showAddPlantForm,
-  addPlantForm,
+  addPlant,
   showEditPlantForm,
-  editPlantForm,
+  editPlant,
   deletePlant,
 };

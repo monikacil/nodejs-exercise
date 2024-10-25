@@ -4,29 +4,31 @@ import {
   showPlantsList,
   showPlantDetails,
   showAddPlantForm,
-  addPlantForm,
+  addPlant,
   showEditPlantForm,
-  editPlantForm,
+  editPlant,
   deletePlant,
 } from "../controllers/plant.controller.js";
 
 import {
   showUserDetails,
+  updateUserDetails,
   showRegisterForm,
   register,
   showLoginForm,
   login,
+  logout,
 } from "../controllers/user.controller.js";
 
 const router = express.Router();
 
 router.get("/", (req, res) => {
-  res.render("home", {
-    user: req.session.user,
-  });
+  res.render("home");
 });
 
-router.get("/user", showUserDetails);
+router.get("/profile", showUserDetails);
+
+router.post("/profile", updateUserDetails);
 
 router.get("/register", showRegisterForm);
 
@@ -36,15 +38,17 @@ router.get("/login", showLoginForm);
 
 router.post("/login", login);
 
+router.get("/logout", logout);
+
 router.get("/plants", showPlantsList);
 
 router.get("/plants/form", showAddPlantForm);
 
-router.post("/plants/form", addPlantForm);
+router.post("/plants/form", addPlant);
 
 router.get("/plants/:id/form", showEditPlantForm);
 
-router.post("/plants/:id/form", editPlantForm);
+router.post("/plants/:id/form", editPlant);
 
 router.get("/plants/:id/delete", deletePlant);
 

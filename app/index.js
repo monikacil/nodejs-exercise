@@ -5,7 +5,9 @@ import path from "path";
 import expressLayouts from "express-ejs-layouts";
 import router from "./routes/web.js";
 import cors from "cors";
-import viewVar from "./middlewares/view-var.js";
+import viewMiddleware from "./middlewares/view-middleware.js";
+import userMiddleware from "./middlewares/user-middleware.js";
+import isAuthMiddleware from "./middlewares/is-auth-middleware.js";
 import cookieParser from "cookie-parser";
 import session from "express-session";
 import { SESSION_KEY_SECRET } from "./config.js";
@@ -30,7 +32,10 @@ app.use(
   })
 );
 
-app.use(viewVar);
+app.use(viewMiddleware);
+app.use(userMiddleware);
+app.use("/plants", isAuthMiddleware);
+app.use("/profile", isAuthMiddleware);
 
 // library - layout for views
 app.use(expressLayouts);

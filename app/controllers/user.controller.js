@@ -1,7 +1,27 @@
 import User from "./../db/models/user.model.js";
 
 function showUserDetails(req, res) {
-  res.render("user/user");
+  res.render("user/profile", {
+    user: req.session.user,
+  });
+}
+
+async function updateUserDetails(req, res) {
+  const user = await User.findById(req.session.user._id);
+  user.email = req.body.email;
+  if (req.body.password) {
+    user.password = req.body.password;
+  }
+  try {
+    await user.save();
+    req.session.user.email = user.email;
+    res.redirect("back");
+  } catch (e) {
+    res.render("user/profile", {
+      errors: e.errors,
+      user: req.body,
+    });
+  }
 }
 
 function showRegisterForm(req, res) {
@@ -50,4 +70,17 @@ async function login(req, res) {
   }
 }
 
-export { showUserDetails, showRegisterForm, register, showLoginForm, login };
+async function logout(req, res) {
+  req.session.destroy();
+  res.redirect("/");
+}
+
+export {
+  showUserDetails,
+  showRegisterForm,
+  register,
+  showLoginForm,
+  login,
+  logout,
+  updateUserDetails,
+};

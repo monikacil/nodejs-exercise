@@ -1,6 +1,30 @@
 import mongoose, { Schema } from "mongoose";
+import User from "./user.model.js";
 
-const PlantSchema = new Schema({
+const BuyerSubSchema = new Schema({
+  name: {
+    type: String,
+    required: [true, "Buyer name is required"],
+  },
+  address: {
+    type: String,
+  },
+  phone: {
+    type: Number,
+    trim: true,
+    required: [true, "Buyer phone number is required"],
+  },
+  email: {
+    type: String,
+    trim: true,
+    required: [true, "Buyer email is required"],
+  },
+  country: {
+    type: String,
+  },
+});
+
+const SubSchema = new Schema({
   species: {
     type: String,
     required: [true, "Species is required"],
@@ -28,29 +52,17 @@ const PlantSchema = new Schema({
     required: [true, "Passport number is required"],
     trim: true,
   },
-  buyer: {
-    name: {
-      type: String,
-      required: [true, "Buyer name is required"],
-    },
-    address: {
-      type: String,
-    },
-    phone: {
-      type: Number,
-      trim: true,
-      required: [true, "Buyer phone number is required"],
-    },
-    email: {
-      type: String,
-      trim: true,
-      required: [true, "Buyer email is required"],
-    },
-    country: {
-      type: String,
-    },
-  },
+  buyer: BuyerSubSchema,
   img: Array,
+});
+
+const PlantSchema = new Schema({
+  userId: {
+    type: mongoose.Types.ObjectId,
+    required: true,
+    ref: User,
+  },
+  plants: [SubSchema],
 });
 
 export default mongoose.model("Plant", PlantSchema);
