@@ -1,5 +1,4 @@
 import mongoose, { Schema } from "mongoose";
-import User from "./user.model.js";
 
 const BuyerSubSchema = new Schema({
   name: {
@@ -24,7 +23,8 @@ const BuyerSubSchema = new Schema({
   },
 });
 
-const SubSchema = new Schema({
+const PlantSchema = new Schema({
+  _ownerId: { type: mongoose.Types.ObjectId, ref: "User" },
   species: {
     type: String,
     required: [true, "Species is required"],
@@ -54,15 +54,6 @@ const SubSchema = new Schema({
   },
   buyer: BuyerSubSchema,
   img: Array,
-});
-
-const PlantSchema = new Schema({
-  userId: {
-    type: mongoose.Types.ObjectId,
-    required: true,
-    ref: User,
-  },
-  plants: [SubSchema],
 });
 
 export default mongoose.model("Plant", PlantSchema);
