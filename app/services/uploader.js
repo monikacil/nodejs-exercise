@@ -1,6 +1,5 @@
 import multer from "multer";
 import sharpMulter from "sharp-multer";
-import path from "path";
 
 const newFilename = function (originalname, options, req) {
   const newname =

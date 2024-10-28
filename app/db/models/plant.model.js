@@ -23,10 +23,13 @@ const BuyerSubSchema = new Schema({
   },
 });
 
-const ImageSchema = new Schema({
-  originalname: String,
-  filename: String,
-});
+const ImageSchema = new Schema(
+  {
+    originalname: String,
+    filename: String,
+  },
+  { timestamps: true }
+);
 
 const PlantSchema = new Schema({
   _ownerId: { type: mongoose.Types.ObjectId, ref: "User" },
