@@ -46,7 +46,7 @@ app.set("views", path.join(__dirname + "/views"));
 app.set("layout", "layout/main");
 
 // static - public
-app.use(express.static(path.join(__dirname, "../public")));
+app.use("/public", express.static("public"));
 
 // body parser
 app.use(express.urlencoded({ extended: true }));

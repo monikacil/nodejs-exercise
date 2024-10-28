@@ -23,6 +23,11 @@ const BuyerSubSchema = new Schema({
   },
 });
 
+const ImageSchema = new Schema({
+  originalname: String,
+  filename: String,
+});
+
 const PlantSchema = new Schema({
   _ownerId: { type: mongoose.Types.ObjectId, ref: "User" },
   species: {
@@ -53,7 +58,10 @@ const PlantSchema = new Schema({
     trim: true,
   },
   buyer: BuyerSubSchema,
-  img: Array,
+  images: {
+    type: [ImageSchema],
+    default: [],
+  },
 });
 
 export default mongoose.model("Plant", PlantSchema);

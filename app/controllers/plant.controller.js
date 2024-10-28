@@ -1,5 +1,7 @@
 import mongoose from "mongoose";
 import Plant from "./../db/models/plant.model.js";
+import fs from "fs";
+import path from "path";
 
 async function showPlantsList(req, res) {
   const { q, sort } = req.query;
@@ -36,7 +38,7 @@ async function showPlantsList(req, res) {
 }
 
 async function showPlantDetails(req, res) {
-  const plant = await Plant.findOne({ _id: req.params.id }).lean();
+  const plant = await Plant.findOne({ _id: req.params.id });
   res.render("plants/plant", {
     plant: plant,
   });
@@ -54,6 +56,7 @@ function showAddPlantForm(req, res) {
 async function addPlant(req, res) {
   const userId = new mongoose.Types.ObjectId(req.session.user._id);
   const data = req.body;
+
   const plant = new Plant({
     _ownerId: userId,
     species: data.species,
@@ -68,7 +71,10 @@ async function addPlant(req, res) {
       email: data.email,
       country: data.country,
     },
+    images: req.files,
   });
+
+  console.log(req.files);
 
   try {
     await plant.save();
@@ -83,7 +89,7 @@ async function addPlant(req, res) {
 }
 
 async function showEditPlantForm(req, res) {
-  const plant = await Plant.findOne({ _id: req.params.id }).lean();
+  const plant = await Plant.findOne({ _id: req.params.id });
 
   const formBody = {
     species: plant.species,
@@ -96,6 +102,7 @@ async function showEditPlantForm(req, res) {
     phone: plant.buyer.phone,
     email: plant.buyer.email,
     country: plant.buyer.country,
+    images: plant.images,
   };
 
   res.render("plants/form", {
@@ -105,6 +112,7 @@ async function showEditPlantForm(req, res) {
 }
 
 async function editPlant(req, res) {
+  const plant = await Plant.findOne({ _id: req.params.id });
   const data = req.body;
   const updated = {
     species: data.species,
@@ -119,7 +127,12 @@ async function editPlant(req, res) {
       email: data.email,
       country: data.country,
     },
+    images: req.files | [],
   };
+
+  if (req.files) {
+    updated.images = plant.images.concat(req.files);
+  }
 
   try {
     await Plant.updateOne({ _id: req.params.id }, updated);
@@ -135,8 +148,38 @@ async function editPlant(req, res) {
 
 async function deletePlant(req, res) {
   try {
+    const plant = await Plant.findOne({ _id: req.params.id });
+    plant.images.forEach((img) => {
+      fs.unlinkSync(path.join("public/images/" + img.filename));
+    });
     await Plant.deleteOne({ _id: req.params.id });
     res.redirect("/plants");
+  } catch (e) {
+    console.log(e);
+  }
+}
+
+async function downloadXlsx(req, res) {
+  try {
+    res.redirect("/plants");
+  } catch (e) {
+    console.log(e);
+  }
+}
+
+async function deleteImg(req, res) {
+  const plant = await Plant.findOne({ _id: req.params.id });
+  let plantImage = null;
+  const updatedPlantImages = plant.images.filter((image, idx) => {
+    if (image._id.toString() === req.params.fileId) {
+      plantImage = image;
+    }
+    return image._id.toString() !== req.params.fileId;
+  });
+  try {
+    fs.unlinkSync(path.join("public/images/" + plantImage.filename));
+    await Plant.updateOne({ _id: req.params.id }, { images: updatedPlantImages });
+    res.redirect("/plants/" + req.params.id);
   } catch (e) {
     console.log(e);
   }
@@ -150,4 +193,6 @@ export {
   showEditPlantForm,
   editPlant,
   deletePlant,
+  downloadXlsx,
+  deleteImg,
 };

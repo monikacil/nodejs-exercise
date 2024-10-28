@@ -1,4 +1,5 @@
 import express from "express";
+import { uploader } from "./../services/uploader.js";
 
 import {
   showPlantsList,
@@ -8,6 +9,8 @@ import {
   showEditPlantForm,
   editPlant,
   deletePlant,
+  downloadXlsx,
+  deleteImg,
 } from "../controllers/plant.controller.js";
 
 import {
@@ -44,15 +47,19 @@ router.get("/plants", showPlantsList);
 
 router.get("/plants/form", showAddPlantForm);
 
-router.post("/plants/form", addPlant);
+router.post("/plants/form", uploader.array("images"), addPlant);
 
 router.get("/plants/:id/form", showEditPlantForm);
 
-router.post("/plants/:id/form", editPlant);
+router.get("/plants/:id/delete-img/:fileId", deleteImg);
+
+router.post("/plants/:id/form", uploader.array("images", 6), editPlant);
 
 router.get("/plants/:id/delete", deletePlant);
 
 router.get("/plants/:id", showPlantDetails);
+
+router.get("/plants/xlsx", downloadXlsx);
 
 router.get("*", (req, res) => {
   res.render("layout/404");
