@@ -59,7 +59,7 @@ router.get("/plants/:id/delete", deletePlant);
 
 router.get("/plants/:id", showPlantDetails);
 
-router.get("/plants/xlsx", downloadXlsx);
+router.get("/plants/download/xlsx", downloadXlsx);
 
 router.get("*", (req, res) => {
   res.render("layout/404");
