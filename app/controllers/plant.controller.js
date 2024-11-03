@@ -162,10 +162,11 @@ async function deletePlant(req, res) {
 
 async function downloadXlsx(req, res) {
   try {
+    res.header("application/vnd.openxmlformats-officedocument.spreadsheetml.sheet");
+    res.attachment("sold-plants.xlsx");
     workbook.xlsx.write(res).then(function () {
       res.end();
     });
-    res.attachment("sold-plants.xlsx");
   } catch (err) {
     res.send({
       status: "error",
